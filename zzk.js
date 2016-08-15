@@ -67,7 +67,6 @@ zzk.fn= zzk.prototype={
   /**
    * [报名截止时间倒计时]
    * @param  {[Timestamp]} val [截止时间的时间戳]
-   * @return {[type]}     [description]
    */
   timecd: function(val){
     var node= this[0], 
@@ -160,15 +159,36 @@ zzk.extend({
    * [阴影，锁屏]
    * showShodw：显示阴影
    * colseShodw： 隐藏阴影
+   * @param  {[string]} opts.img [锁屏图片路径]
+   * @param  {[string]} opts.size [图片大小]
    */
-  createMask: function(){
-    $("body").append('<div class="g-tkzz tc" style="z-index:9999;display:none;background: url(http://7xj5ea.com2.z0.glb.qiniucdn.com/loa_phone-zzbg.png) repeat; width: 100%; height: 100%; position: fixed; top: 0; left: 0;"><img style="margin-top: 15%;" src="http://7xj5ea.com2.z0.glb.qiniucdn.com/loa_loading.gif" alt=""></div>');
-    $(".g-tkzz").fadeIn('slow/400/fast');
+  showShodw: function(opts){
+    var body= document.getElementsByTagName('body'),
+        node= document.createElement('div'),
+        img= document.createElement('img');
+
+    img.src="http://7xj5ea.com2.z0.glb.qiniucdn.com/loa_loading.gif";
+    img.style.position="absolute";
+    img.style.top="50%";
+    img.style.left="50%";
+    img.style.width="100px";
+    img.style.height="100px";
+    img.style.marginTop="-50px";
+    img.style.marginLeft="-50px";
+    node.style.zIndex= "9999";
+    node.style.backgroundColor= "#ccc";
+    node.style.width= "100%";
+    node.style.height= "100%";
+    node.style.position= "fixed";
+    node.style.top= "0";
+    node.style.left= "0";
+    node.appendChild(img);
+    node.id="zzk.shodwBackdrop";
+    body[0].appendChild(node);    
   },
   colseShodw:function(){
-    $(".g-tkzz").fadeOut('slow/400/fast',function(){
-      $(".g-tkzz").remove();
-    });
+    var shodw=document.getElementById('zzk.shodwBackdrop');
+    shodw.remove();
   }
 });
 
