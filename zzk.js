@@ -2,8 +2,8 @@
  * [组件库]
  * 
  * @auhor: zkzhao
- * @date: 2016/8/10
- * @version: 1.0
+ * @date: 2017/9/26
+ * @version: 1.1
  * @email: zzk_312@163.com
  */
 ;(function(global,factory) {
@@ -22,6 +22,7 @@
 var zzk= function(selector){
   return new zzk.prototype.init(selector);
 }
+//原型方法
 zzk.fn= zzk.prototype={
   constructor: zzk,
   init: function(selector){
@@ -102,8 +103,10 @@ zzk.fn= zzk.prototype={
     },1000);
   }
 }
+//无new结构
 zzk.fn.init.prototype= zzk.fn;
 
+//继承
 zzk.extend= zzk.fn.extend= function(){
   var options,src,copy,
       target= arguments[0] || {},
@@ -123,7 +126,7 @@ zzk.extend= zzk.fn.extend= function(){
   }
   return target;
 }
-
+//静态方法
 zzk.extend({
   /**
    * [URL获取参数值]
@@ -157,38 +160,40 @@ zzk.extend({
   },
   /**
    * [阴影，锁屏]
-   * showShodw：显示阴影
-   * colseShodw： 隐藏阴影
+   * showShadow：显示阴影
+   * colseShadow： 隐藏阴影
    * @param  {[string]} opts.img [锁屏图片路径]
    * @param  {[string]} opts.size [图片大小]
    */
-  showShodw: function(opts){
+  showShadow: function(opts){
     var body= document.getElementsByTagName('body'),
         node= document.createElement('div'),
-        img= document.createElement('img');
-
-    img.src="http://7xj5ea.com2.z0.glb.qiniucdn.com/loa_loading.gif";
-    img.style.position="absolute";
-    img.style.top="50%";
-    img.style.left="50%";
-    img.style.width="100px";
-    img.style.height="100px";
-    img.style.marginTop="-50px";
-    img.style.marginLeft="-50px";
-    node.style.zIndex= "9999";
-    node.style.backgroundColor= "#ccc";
+        style = document.createElement('style'),
+        css = '.circle-load {position: absolute;width: 200px;height: 200px;top: 50%;left: 50%; transform: translate(-50%, -50%);}'+
+              '.circle-load-svg {stroke-dasharray: 0 570;animation: rot 1.5s linear infinite;}'+
+              '@keyframes rot {100% {stroke-dasharray: 570 570;}}';
+    node.style.zIndex= "99";
+    node.style.backgroundColor= "rgba(0,0,0,0.5)";
     node.style.width= "100%";
     node.style.height= "100%";
     node.style.position= "fixed";
     node.style.top= "0";
     node.style.left= "0";
-    node.appendChild(img);
-    node.id="zzk.shodwBackdrop";
-    body[0].appendChild(node);    
+    node.id="zzk.shadowBackdrop";
+    style.type = 'text/css';
+    style.innerHTML = css;
+    document.getElementsByTagName('head')[0].appendChild(style);
+    node.innerHTML= '<div class="circle-load">'+
+                      '<svg width="240" height="240" version="1.1" xmlns="http://www.w3.org/2000/svg">'+
+                            '<circle cx="110" cy="110" r="90" stroke-width="15" stroke="gainsboro" fill="none"></circle>'+
+                            '<circle cx="110" cy="110" r="90" stroke-width="15" stroke="darkturquoise" fill="none" class="circle-load-svg"></circle>'+
+                        '</svg>'+
+                    '</div>';
+    body[0].appendChild(node);
   },
-  colseShodw:function(){
-    var shodw=document.getElementById('zzk.shodwBackdrop');
-    shodw.remove();
+  colseShadow:function(){
+    var shadow=document.getElementById('zzk.shadowBackdrop');
+    shadow.remove();
   }
 });
 
